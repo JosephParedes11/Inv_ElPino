@@ -1,0 +1,131 @@
+﻿@model PaginacionViewModel<ContratoModel>
+
+@{
+    ViewData["Title"] = "Contratos";
+}
+
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper"
+    <!-- Main content -->
+    <div class="content">
+        <div class="container-fluid">
+            <div class="row mt-2">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="row">
+                                <div class="col-6">
+                                    <h2 class="m-0">Contratos</h2>
+                                </div>
+                                <div class="col-6 d-flex justify-content-end">
+                                    <a class="btn btn-primary" asp-area="" asp-controller="Contratos" asp-action="Create">
+                                        Nuevo Contrato
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /.card-header -->
+                        <div class="card-body">
+                            <table id="example2" class="table table-bordered table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Fecha</th>
+                                        <th>DNI Cliente</th>
+                                        <th>Cliente</th>
+                                        <th>Lote</th>
+                                        <th>Tipo Pago</th>
+                                        <th>Cuota Inicial</th>
+                                        <th>Monto Total</th>
+                                        <th>Empresa</th>
+                                        <th>Opciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model.Items)
+                                    {
+                                            <tr>
+                                                <td>@item.Fecha.ToString("dd/MM/yyyy")</td>
+                                                <td>@item.Cliente?.DNI</td>
+                                                <td>@($"{item.Cliente?.Nombres} {item.Cliente?.Apellidos}")</td>
+                                                <td>Mz. @($"{item.Lote.Manzana} Letra.  {item.Lote.Letra}")</td>
+                                                <td>@item.PagoTipo</td>
+                                                <td>@item.CuotaInicial</td>
+                                                <td>@item.MontoTotal</td>
+                                                <td>@item.Empresa?.RazonSocial</td>
+                                                <td>
+                                                    <a class="btn btn-info" asp-action="Edit" asp-route-id="@item.ContratoID">Editar</a>
+                                                    <a class="btn btn-danger text-white  delete-dialog-window"  data-contrato="@item.ContratoID">Eliminar</a>
+                                                </td>
+                                            </tr>
+                                    }
+                                </tbody>
+                            </table>
+                            
+                        </div>
+                        <div class="card-footer justify-content-end">
+                            <div class="row">
+                                <div class="col-12 ">
+                                    <nav aria-label="Page navigation example">
+                                        <ul class="pagination">
+                                            @if (Model.PaginaActual > 1)
+                                            {
+                                                    <li class="page-item"><a class="page-link" href="?pagina=1">Primera</a></li>
+                                                    <li class="page-item"><a class="page-link" href="?pagina=@(Model.PaginaActual - 1)">Anterior</a></li>
+                                            }
+
+                                            @for (int i = 1; i <= Math.Ceiling((double)Model.TotalItems / Model.TamanoPagina); i++)
+                                            {
+                                                <li class="page-item @(i == Model.PaginaActual ? "active" : "")"><a class="page-link" href="?pagina=@i">@i</a></li>
+                                            }
+
+                                            @if (Model.PaginaActual < Math.Ceiling((double)Model.TotalItems / Model.TamanoPagina))
+                                            {
+                                                <li class="page-item"><a class="page-link" href="?pagina=@(Model.PaginaActual + 1)">Siguiente</a></li>
+                                                <li class="page-item"><a class="page-link" href="?pagina=@(Math.Ceiling((double)Model.TotalItems / Model.TamanoPagina))">Última</a></li>
+                                            }
+                                        </ul>
+                                    </nav>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="Anular" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-danger">
+                <h5 class="modal-title text-white" id="anularModalTittle"></h5>
+                <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p></p>
+                <h5 id="anularModalH5"></h5>
+            </div>
+            <div id="response" class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $("body").on("click", "a.delete-dialog-window", null, function (e) {
+            var htmlContent = '<br /><button type="button" id="btnNo" class="btn btn-danger" style="background-color:#da2213;color:white;" data-dismiss="modal" aria-hidden="true">No</button>&nbsp&nbsp<a href="@Url.Action("Delete", "Contratos")?id=' + $(this).data('contrato') + '" class="btn btn-default">Si</a>';
+
+            $('#anularModalTittle').text("Eliminar Contrato");
+            $('#anularModalH5').text("¿Esta seguro de Eliminar el registro seleccionado?");
+            $("#response").html(htmlContent);
+            $('#Anular').modal('show');
+        });
+    </script>
+}
+
+
+

@@ -1,0 +1,92 @@
+﻿@model GestionContratos.Models.ContratoModel
+
+@{
+    ViewData["Title"] = "Create";
+}
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper"
+    <!-- Main content -->
+    <div class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="row">
+                                <div class="col-6">
+                                    <h2 class="m-0">Nuevo Contrato</h2>
+                                </div>
+                                <div class="col-6 d-flex justify-content-end">
+                                    <a class="btn btn-info float-rigth" asp-action="Index">Regresar</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            @if (TempData["ErrorMessage"] != null)
+                            {
+                                    <div class="alert alert-danger">
+                                    @TempData["ErrorMessage"]
+                                    </div>
+                            }
+                            <form asp-action="Create">
+                                <div class="form-group">
+                                    <label asp-for="ClienteID" class="control-label">Cliente</label>
+                                    <select asp-for="ClienteID" class="form-control" id="clienteSelect" asp-items="@(new SelectList(ViewBag.Clientes, "ClienteID", "NombreCompleto"))">
+                                        <option></option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="EmpresaID" class="control-label">Empresa</label>
+                                    <select asp-for="EmpresaID" class="form-control" id="empresaSelect"  asp-items="@(new SelectList(ViewBag.Empresas, "EmpresaID", "RucRazonSocial"))">
+                                        <option></option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="PagoTipo" class="control-label">Tipo de Pago</label>
+                                    <select asp-for="PagoTipo" class="form-control">
+                                        <option>[Seleccione]</option>
+                                        <option value="contado">Contado</option>
+                                        <option value="financiado">Financiado</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="LoteID" class="control-label">Lote</label>
+                                    <select asp-for="LoteID" class="form-control" id="loteSelect"  asp-items="@(new SelectList(ViewBag.Lotes, "LoteID", "Descripcion"))">
+                                        <option></option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="Igv" class="control-label">IGV</label>
+                                    <input asp-for="Igv" id="Igv" type="number" class="form-control" placeholder="0.00" required readonly/>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="MontoTotal" class="control-label">Monto Total</label>
+                                    <input asp-for="MontoTotal" id="montoTotal" type="number" class="form-control" placeholder="0.00" required readonly/>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="CuotaInicial" class="control-label">Cuota Inicial</label>
+                                    <input asp-for="CuotaInicial" type="number" class="form-control" placeholder="0.00" required/>
+                                </div>
+
+                                <div class="form-group">
+                                    <button type="submit" class="btn btn-primary">Guardar</button>
+                                    <a class="btn btn-info float-rigth" asp-action="Index">Regresar</a>
+                                </div>
+                            </form>
+                        </div> 
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@* <script>
+    var lotes = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(ViewBag.Lotes));
+</script> *@
+
+@* @section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+} *@

@@ -1,0 +1,68 @@
+﻿@model IEnumerable<GestionContratos.Models.ClienteModel>
+
+@{
+    ViewData["Title"] = "Clientes";
+}
+
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper"
+        <!-- Main content -->
+    <div class="content">
+        <div class="container-fluid">
+            <div class="row mt-2">
+                <div class="col-12">
+                    <div class="card">
+                         <div class="card-header">
+                            <div class="row">
+                                <div class="col-6">
+                                    <h2 class="m-0">Clientes</h2>
+                                </div>
+                                <div class="col-6 d-flex justify-content-end">
+                                    <a class="btn btn-primary" asp-area="" asp-controller="Clientes" asp-action="Create">
+                                        Nuevo Cliente
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /.card-header -->
+                        <div class="card-body">
+                            <table id="example2" class="table table-bordered table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Nombres</th>
+                                        <th>Apellidos</th>
+                                        <th>DNI</th>
+                                        <th>Correo</th>
+                                        <th>Direccion</th>
+                                        <th>Telefono</th>
+                                        <th>Opciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model)
+                                    {
+                                        <tr>
+                                            <td>@item.Nombres</td>
+                                            <td>@item.Apellidos</td>
+                                            <td>@item.DNI</td>
+                                            <td>@item.Correo</td>
+                                            <td>@item.Direccion</td>
+                                            <td>@item.Telefono</td>
+                                            <td>
+                                                <a class="btn btn-info" asp-action="Edit" asp-route-id="@item.ClienteID">Editar</a>
+                                                <a class="btn btn-danger text-white  delete-dialog-window"  data-cliente="@item.ClienteID">Eliminar</a>
+                                            </td>
+                                        </tr>
+                                        
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
